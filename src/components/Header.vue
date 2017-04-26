@@ -20,8 +20,8 @@
             <a 
               href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Save & Load <span class="caret"></span></a>
             <ul class="dropdown-menu" >
-              <li><a href="#">Save Data</a></li>
-              <li><a href="#">Load Data</a></li>
+              <li><a href="#" @click="saveData">Save Data</a></li>
+              <li><a href="#" @click="loadData">Load Data</a></li>
               
             </ul>
           </li>
@@ -52,6 +52,18 @@
       ]),
       endDay() {
         this.randomizeStocks()
+      },
+      saveData() {
+        const data = {
+          funds: this.$store.getters.funds,
+          stockPortfolio: this.$store.getters.stockPortfolio,
+          stocks: this.$store.getters.stocks
+        }
+        console.log(data)
+        this.$http.put('data.json', data)
+      },
+      loadData() {
+        
       }
     }
   }
