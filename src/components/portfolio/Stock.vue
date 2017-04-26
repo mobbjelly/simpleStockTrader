@@ -6,15 +6,15 @@
           {{stock.name}}
           <small>(Price: {{ stock.price }} | Quantity: {{stock.quantity }})</small>
         </div>
-        <div class="panel-body">
-          <div class="pull-left">
-            <input type="number" class="form-control" placeholder="Quantity" v-model.number="quantity">
+      </div>
+      <div class="panel-body">
+          <div class="pull-left" :class="{ 'has-error': insufficientQuantity}">
+            <input type="number" class="form-control input-sm" placeholder="Quantity" v-model.number="quantity">
           </div>
           <div class="pull-right">
-            <button class="btn btn-success" @click="sellStock" :disabled="quantity <= 0 || !Number.isInteger(quantity)">Sell</button>
+            <button class="btn btn-sm btn-success" @click="sellStock" :disabled="quantity <= 0 || !Number.isInteger(quantity) ||insufficientQuantity">{{ insufficientQuantity ? 'Not enough stocks' : 'Sell'}}</button>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -26,6 +26,14 @@
     data() {
       return {
         quantity: 0
+      }
+    },
+    computed: {
+      insufficientQuantity() {
+        return this.quantity > this.stock.quantity
+      },
+      funds() {
+        return this.$store.getters.funds
       }
     },
     methods: {
